@@ -5,7 +5,9 @@
   <title>Scoped CSS Variables and JS</title>
 </head>
 <body>
-  <h2>Update CSS Variables with <span class='hl'>JS</span></h2>
+  <!-- scoping varibale to an element -->
+  <h2 style="--bgcolor: #BADA55">
+    Update CSS Variables with <span class='hl'>JS</span></h2>
 
   <div class="controls">
     <label for="spacing">Spacing:</label>
@@ -15,7 +17,7 @@
     <input id="blur" type="range" name="blur" min="0" max="15" value="5" data-sizing="px">
 
     <label for="base">Base Color</label>
-    <input id="base" type="color" name="base" value="#ffc600">
+    <input id="base" type="color" name="bgcolor" value="#ffc600">
   </div>
 
   <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
@@ -53,30 +55,46 @@
     input {
       width: 100px;
     }
+
+    .hl {
+      color: var(--bgcolor);
+    }
   </style>
 
   <script>
-    const spacing = document.querySelector('#spacing');
-    const img = document.querySelector('img');
-    // console.log(img);
+    // const spacing = document.querySelector('#spacing');
+    // const img = document.querySelector('img');
 
-    spacing.addEventListener('input', (e) => {
+    // spacing.addEventListener('input', (e) => {
+    //   const spacingValue = spacing.value;
+    //   document.documentElement.style.setProperty('--spacing', `${spacingValue}px`);
+    // });
 
-      const spacingValue = spacing.value;
-      document.documentElement.style.setProperty('--spacing', `${spacingValue}px`);
-    });
+    // const blurControl = document.querySelector('#blur');
+    // blurControl.addEventListener('input', (e) => {
+    //   const blurValue = blurControl.value;
+    //   document.documentElement.style.setProperty('--blur', `${blurValue}px`);
+    // });
 
-    const blurControl = document.querySelector('#blur');
-    blurControl.addEventListener('input', (e) => {
-      const blurValue = blurControl.value;
-      document.documentElement.style.setProperty('--blur', `${blurValue}px`);
-    });
+    // const colorControl = document.querySelector('#base');
+    // colorControl.addEventListener('input', (e) => {
+    //   const colorValue = colorControl.value;
+    //   document.documentElement.style.setProperty('--bgcolor', `${colorValue}`);
+    //   document.querySelector('.hl').style.color = colorValue;
+    // });
 
-    const colorControl = document.querySelector('#base');
-    colorControl.addEventListener('input', (e) => {
-      const colorValue = colorControl.value;
-      document.documentElement.style.setProperty('--bgcolor', `${colorValue}`);
-      document.querySelector('.hl').style.color = colorValue;
+    const inputs = document.querySelectorAll('input');
+    // console.log(inputs)
+
+    function handleUpdate() {
+      const suffix = this.dataset.sizing || '';
+      const newValue = this.value;
+      document.documentElement.style.setProperty( `--${this.name}`, `${newValue}${suffix}`);
+    }
+
+
+    inputs.forEach(element => {
+      element.addEventListener('input', handleUpdate);
     });
   </script>
 
